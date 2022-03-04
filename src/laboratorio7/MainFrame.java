@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ComboBoxModel;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
@@ -36,6 +37,8 @@ public class MainFrame extends javax.swing.JFrame {
     File Arhivo;
     
     PanelPartidos TablaPartidos;
+    
+    Simulacion sim;
 
     public MainFrame() {
         
@@ -43,6 +46,9 @@ public class MainFrame extends javax.swing.JFrame {
         
         
         TablaPartidos= new PanelPartidos();
+        
+
+              
          
 
         initComponents();
@@ -63,6 +69,9 @@ public class MainFrame extends javax.swing.JFrame {
            GuardarArhcivo();
         
         }
+        
+        
+        sim = new Simulacion(ListaEquipos);
 
         
         
@@ -131,7 +140,7 @@ public class MainFrame extends javax.swing.JFrame {
 
         DefaultTableModel model = new DefaultTableModel(
                 Elemtos(),
-                new Object[]{"Nombre", "PJ", "PE", "PP", "GF", "GC","DG","Puntos"}
+                new Object[]{"Nombre", "PJ","PG","PE", "PP", "GF", "GC","DG","Puntos"}
         ) {
 
             public boolean isCellEditable(int row, int column) {
@@ -304,13 +313,23 @@ public Equipo BuscarEquipo(String nombre){
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jToggleButton2 = new javax.swing.JToggleButton();
         Cargar = new javax.swing.JButton();
-        jToggleButton1 = new javax.swing.JToggleButton();
+        Simulacion = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
+        jMenuItem2 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
 
+        jToggleButton2.setText("jToggleButton2");
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosed(java.awt.event.WindowEvent evt) {
+                formWindowClosed(evt);
+            }
+        });
 
         Cargar.setText("CargarEquipo");
         Cargar.addActionListener(new java.awt.event.ActionListener() {
@@ -319,7 +338,12 @@ public Equipo BuscarEquipo(String nombre){
             }
         });
 
-        jToggleButton1.setText("Simular");
+        Simulacion.setText("Simular");
+        Simulacion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                SimulacionActionPerformed(evt);
+            }
+        });
 
         jMenu1.setText("Equipos");
         jMenu1.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -332,6 +356,18 @@ public Equipo BuscarEquipo(String nombre){
                 jMenu1ActionPerformed(evt);
             }
         });
+
+        jMenuItem1.setText("Agregar Equipo");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem1);
+
+        jMenuItem2.setText("jMenuItem2");
+        jMenu1.add(jMenuItem2);
+
         jMenuBar1.add(jMenu1);
 
         jMenu2.setText("Partido");
@@ -349,22 +385,23 @@ public Equipo BuscarEquipo(String nombre){
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(275, 275, 275)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jToggleButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(Cargar, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(14, 14, 14)))
-                .addContainerGap(289, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(281, 281, 281)
+                        .addComponent(Cargar, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(260, 260, 260)
+                        .addComponent(Simulacion, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(320, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(228, 228, 228)
-                .addComponent(jToggleButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 179, Short.MAX_VALUE)
+                .addContainerGap(300, Short.MAX_VALUE)
+                .addComponent(Simulacion, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(51, 51, 51)
                 .addComponent(Cargar, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(29, 29, 29))
+                .addGap(69, 69, 69))
         );
 
         pack();
@@ -377,25 +414,7 @@ public Equipo BuscarEquipo(String nombre){
     }//GEN-LAST:event_jMenu1ActionPerformed
 
     private void jMenu1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu1MouseClicked
-   
-         JTextField Nombre = new JTextField();
-        
-        JOptionPane.showInternalMessageDialog(null,Nombre,"Nombre del equipo", JOptionPane.OK_CANCEL_OPTION);
-        String Entrada= Nombre.getText();
-        System.out.println(Entrada);
-        if(BuscarEquipo(Entrada)==null){
-             ListaEquipos.add(new Equipo(Entrada,0,0,0,0,0,0,0,0));
-             System.out.println("Creando");
-  
-        }
-        
-        GuardarArhcivo();
-        
-       
-        
-        
-        
-        
+
         
         
         
@@ -426,6 +445,60 @@ public Equipo BuscarEquipo(String nombre){
         
         
     }//GEN-LAST:event_jMenu2MouseClicked
+
+    private void SimulacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SimulacionActionPerformed
+        // TODO add your handling code here:
+        for(Equipo item: ListaEquipos){
+            
+            sim.getBox1().addItem(item);
+            sim.getBox2().addItem(item);
+        
+        
+        
+        }
+        
+        JOptionPane.showMessageDialog(null,sim,"Simulacion",JOptionPane.PLAIN_MESSAGE);
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    }//GEN-LAST:event_SimulacionActionPerformed
+
+    private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
+        // TODO add your handling code here:
+        
+        GuardarArhcivo();
+    }//GEN-LAST:event_formWindowClosed
+
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        // TODO add your handling code here:
+        
+        
+           
+         JTextField Nombre = new JTextField();
+        
+        JOptionPane.showInternalMessageDialog(null,Nombre,"Nombre del equipo", JOptionPane.OK_CANCEL_OPTION);
+        String Entrada= Nombre.getText();
+        System.out.println(Entrada);
+        if(BuscarEquipo(Entrada)==null){
+             ListaEquipos.add(new Equipo(Entrada,0,0,0,0,0,0,0,0));
+             System.out.println("Creando");
+  
+        }
+        
+        GuardarArhcivo();
+        
+       
+        
+        
+        
+        
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -476,9 +549,12 @@ public Equipo BuscarEquipo(String nombre){
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Cargar;
+    private javax.swing.JButton Simulacion;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JToggleButton jToggleButton1;
+    private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JToggleButton jToggleButton2;
     // End of variables declaration//GEN-END:variables
 }

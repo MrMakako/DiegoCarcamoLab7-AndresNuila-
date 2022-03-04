@@ -19,6 +19,11 @@ public class Equipo {
     
     
     private  String nombre;
+
+    public Equipo() {
+    }
+    
+    
     
     
 
@@ -71,6 +76,53 @@ public class Equipo {
     public int getPuntos() {
         return Puntos;
     }
+
+    public void setPartJ(int PartJ) {
+        this.PartJ = PartJ;
+    }
+
+    public void setPartG(int PartG) {
+        this.PartG = PartG;
+    }
+
+    public void setPartE(int PartE) {
+        this.PartE = PartE;
+    }
+
+    public void setPartP(int PartP) {
+        this.PartP = PartP;
+    }
+
+    public void setGolesF(int GolesF) {
+        this.GolesF = GolesF;
+    }
+
+    public void setGolesC(int GolesC) {
+        this.GolesC = GolesC;
+    }
+
+    public void setGolesD(int GolesD) {
+        this.GolesD = GolesD;
+    }
+
+    public void setPuntos(int Puntos) {
+        this.Puntos = Puntos;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    @Override
+    public String toString(){
+    
+        return nombre;
+    
+    
+    }
+    
+    
+    
     
     
     
