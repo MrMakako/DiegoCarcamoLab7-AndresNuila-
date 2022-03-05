@@ -39,6 +39,8 @@ public class MainFrame extends javax.swing.JFrame {
     
     Editar Editor;
 
+    
+    ///COmmit funcional
     public MainFrame() {
         
         ListaEquipos= new ArrayList<>();
@@ -624,12 +626,18 @@ public Equipo BuscarEquipo(String nombre){
            
            
            
+      
+           
+           
+           
           
         
             
         
         
         }
+        
+             GuardarArhcivo();
         
         
         
