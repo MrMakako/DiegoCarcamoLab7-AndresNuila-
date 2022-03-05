@@ -14,12 +14,8 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import java.io.IOException;
 import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.ComboBoxModel;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 /**
@@ -39,6 +35,9 @@ public class MainFrame extends javax.swing.JFrame {
     PanelPartidos TablaPartidos;
     
     Simulacion sim;
+    
+    
+    Editar Editor;
 
     public MainFrame() {
         
@@ -77,6 +76,47 @@ public class MainFrame extends javax.swing.JFrame {
         
         
         
+    }
+    
+    
+    public void OrdenarEquipos(){
+    
+        for(int i =0;i<ListaEquipos.size()-1;i++){
+        
+            for(int x= 0 ;x<ListaEquipos.size()-1;x++){
+            
+                Equipo Actual= ListaEquipos.get(x);
+                
+                Equipo Siguiente= ListaEquipos.get(x+1);
+                
+                
+                if(Actual.getPuntos()<Siguiente.getPuntos()){
+                    ListaEquipos.set(x,Siguiente);
+                    
+                    ListaEquipos.set(x+1,Actual);
+                
+                    
+                
+                
+                
+                }
+                
+            
+            
+            
+            
+            }
+        
+        
+        }
+    
+    
+    
+    
+    
+    
+    
+    
     }
 
    
@@ -225,6 +265,9 @@ public Equipo BuscarEquipo(String nombre){
     
     }
 
+
+   
+
     public void GuardarArhcivo() {
         try {
 
@@ -339,6 +382,11 @@ public Equipo BuscarEquipo(String nombre){
         });
 
         Simulacion.setText("Simular");
+        Simulacion.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                SimulacionMouseClicked(evt);
+            }
+        });
         Simulacion.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 SimulacionActionPerformed(evt);
@@ -365,7 +413,17 @@ public Equipo BuscarEquipo(String nombre){
         });
         jMenu1.add(jMenuItem1);
 
-        jMenuItem2.setText("jMenuItem2");
+        jMenuItem2.setText("Editar Equipos");
+        jMenuItem2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jMenuItem2MouseClicked(evt);
+            }
+        });
+        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem2ActionPerformed(evt);
+            }
+        });
         jMenu1.add(jMenuItem2);
 
         jMenuBar1.add(jMenu1);
@@ -423,9 +481,14 @@ public Equipo BuscarEquipo(String nombre){
     private void CargarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CargarActionPerformed
         // TODO add your handling code here:
         JFileChooser selector= new JFileChooser();
-        JOptionPane.showMessageDialog(null, selector, "Elija la ruta",JOptionPane.OK_CANCEL_OPTION);
-        
-        Arhivo= selector.getSelectedFile();
+        JOptionPane.showMessageDialog(null, selector, "Elija la ruta",JOptionPane.YES_NO_OPTION);
+      
+       if( selector.getSelectedFile()==null){
+           Arhivo= selector.getSelectedFile();
+       
+       
+       
+       }
         
         
         
@@ -433,6 +496,9 @@ public Equipo BuscarEquipo(String nombre){
 
     private void jMenu2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu2MouseClicked
         // TODO add your handling code here:
+        
+        OrdenarEquipos();
+        
         GenerarTabla(TablaPartidos.getTablaPartidos());
         
         
@@ -500,6 +566,82 @@ public Equipo BuscarEquipo(String nombre){
         
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
+    private void jMenuItem2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuItem2MouseClicked
+        // TODO add your handling code here:
+        
+     
+        
+        
+        
+        
+        
+        
+    }//GEN-LAST:event_jMenuItem2MouseClicked
+
+    private void SimulacionMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_SimulacionMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_SimulacionMouseClicked
+
+    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+        // TODO add your handling code here:
+        
+         System.out.println("Editar");
+         
+         
+         
+        
+        Editar Editor= new Editar(ListaEquipos);
+        
+        
+         JOptionPane.showMessageDialog(null, Editor, "Editar",JOptionPane.PLAIN_MESSAGE);
+        
+        
+       Equipo seleccionado= BuscarEquipo(((Equipo)Editor.getBoxEquipos().getSelectedItem()).getNombre());
+        if(Editor.getBtnEliminar().isSelected()){
+            ListaEquipos.remove(seleccionado);
+            
+            
+        
+        }else{
+            
+           if(BuscarEquipo(Editor.getNombre().getText())==null){
+               seleccionado.setNombre(Editor.getNombre().getText());
+           
+           
+           }else{
+           
+               System.out.println("No se pudo cambiar nombre , Quiza otros cambiso tambien se allan realizado");
+               
+               
+               
+               
+               
+               
+               
+               
+               
+           }
+           
+           
+           
+          
+        
+            
+        
+        
+        }
+        
+        
+        
+        
+        
+       
+        
+        
+      
+        
+    }//GEN-LAST:event_jMenuItem2ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -541,6 +683,7 @@ public Equipo BuscarEquipo(String nombre){
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 new MainFrame().setVisible(true);
             }
